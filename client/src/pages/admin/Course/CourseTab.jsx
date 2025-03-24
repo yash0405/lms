@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEditCourseMutation } from "@/features/api/courseApi";
 
 const CourseTab = () => {
   const [input, setInput] = useState({
@@ -35,6 +36,9 @@ const CourseTab = () => {
 
   const [previewThumbnail, setPriviewThumbnail] = useState("");
   const navigate = useNavigate();
+
+  const [editCourse, {data,isLoading, isSuccess, error}] = useEditCourseMutation();
+
   const changeEventHandler = (e) => {
     const { name, value } = e.target;
     setInput({ ...input, [name]: value });
@@ -58,13 +62,20 @@ const CourseTab = () => {
     }
   };
 
-  const updateCourseHandler = () =>{
-    console.log(input);
-    
+  const updateCourseHandler = async () =>{
+    const formData = new FormData();
+    formData.append("courseTitle", input.courseTitle);
+    formData.append("subTitle", input.subTitle);
+    formData.append("description", input.description);
+    formData.append("category", input.category);
+    formData.append("courseLevel", input.courseLevel);
+    formData.append("coursePrice", input.coursePrice);
+    formData.append("courseThumbnail", input.courseThumbnail);
+
+    await editCourse({ formData, courseId });
   }
 
   const isPublished = false;
-  const isLoading = false;
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
