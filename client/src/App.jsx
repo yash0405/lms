@@ -6,7 +6,11 @@ import MainLayout from "./layout/MainLayout";
 import Courses from "./pages/student/Courses";
 import MyLearning from "./pages/student/MyLearning";
 import Profile from "./pages/student/Profile";
-
+import Sidebar from "./pages/admin/Sidebar";
+import Dashboard from "./pages/admin/Dashboard";
+import CourseTable from "./pages/admin/Course/CourseTable";
+import AddCourse from "./pages/admin/Course/AddCourse";
+import EditCourse from "./pages/admin/Course/Editcourse";
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -17,7 +21,7 @@ const appRouter = createBrowserRouter([
         element: (
           <>
             <HeroSection />
-            <Courses/>
+            <Courses />
           </>
         ),
       },
@@ -32,6 +36,30 @@ const appRouter = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+
+      // admin routes here
+      {
+        path: "admin",
+        element: <Sidebar />,
+        children: [
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "course",
+            element: <CourseTable />,
+          },
+          {
+            path: "course/create",
+            element: <AddCourse />,
+          },
+          {
+            path: "course/:courseId",
+            element: <EditCourse />,
+          },
+        ],
       },
     ],
   },

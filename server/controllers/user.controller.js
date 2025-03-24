@@ -112,7 +112,7 @@ export const updateProfile = async(req,res) => {
   try {
     const userId = req.id;
     const {name} = req.body;
-    const {profilePhoto} = req.file;
+    const profilePhoto = req.file;
 
     const user = await User.findById(userId);
     if(!user){
@@ -132,7 +132,7 @@ export const updateProfile = async(req,res) => {
     const photoUrl = cloudResponse.secure_url;
 
     const updatedData = {name, photoUrl}
-    const updatedUser = await User.findByIdAndUpdate(userId,updatedData, {new:true}.select("-passwprd"));
+    const updatedUser = await User.findByIdAndUpdate(userId,updatedData, {new:true}).select("-passwprd");
     return res.status(200).json({
       success:true,
       user: updatedUser,

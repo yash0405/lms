@@ -23,10 +23,24 @@ export const authApi = createApi({
         method: "POST",
         body: inputData,
       }),
-      async onQueryStarted(_, { queryFulfilfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const result = await queryFulfilfilled;
+          const result = await queryFulfilled;
           dispatch(userLoggedIn({ user: result.data.user }));
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    logoutUser: builder.mutation({
+      query:()=>({
+        url:"logout",
+        method:"GET"
+      }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(userLoggedOut());
         } catch (error) {
           console.log(error);
         }
@@ -37,6 +51,14 @@ export const authApi = createApi({
         url: "profile",
         method: "GET",
       }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(userLoggedIn({ user: result.data.user }));
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     updateUser: builder.mutation({
       query: (formData) => ({
@@ -53,5 +75,7 @@ export const {
   useRegisterUserMutation,
   useUpdateUserMutation,
   useLoginUserMutation,
+  useLogoutUserMutation,
   useLoadUserQuery,
+
 } = authApi;
